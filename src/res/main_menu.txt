@@ -1,0 +1,7 @@
+
+OPTIONS:
+
+    1: Store password (stores encypted password)
+    2: Match password (unlimited attempts allowed)
+    3: Exit program
+
