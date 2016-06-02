@@ -12,7 +12,6 @@ end
 desc 'Runs program (default task)'
 task main: [:include_necessary_references] do
   require 'io/console'
-  require 'tzinfo'
   PasswordStore::Program.new
 end
 

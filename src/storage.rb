@@ -14,7 +14,7 @@ module PasswordStore
     # Assumes `hashes.valid_from` is not in future (extra validation logic would be
     # needed to deal with this not being the case)
     def store_hash(hash, target)
-      transition_time = TZInfo::Timezone.get(@settings[:timezone]).now.to_i
+      transition_time = Time.now.to_i
       should_invalidate_existing_hash = any_hashes_for_target(target)
       t_id = target_id(target)
 
@@ -38,7 +38,7 @@ SQL
       db_result = @db.execute 'SELECT id FROM targets WHERE target = ?', target
       return db_result[0][0] unless db_result.empty?
 
-      now = TZInfo::Timezone.get(@settings[:timezone]).now.to_i
+      now = Time.now.to_i
       @db.execute <<SQL, [target, now, now, now]
 INSERT INTO targets (target, created_at, updated_at, valid_from)
 VALUES (?, ?, ?, ?)
@@ -63,8 +63,8 @@ SQL
     end
 
     def invalidate_existing_hash(target_id:,
-                                 transition_time: TZInfo::Timezone.get(@settings[:timezone]).now,
-                                 now: TZInfo::Timezone.get(@settings[:timezone]).now, db: nil)
+                                 transition_time: Time.now,
+                                 now: Time.now, db: nil)
       db = @db if db.nil?
       db.execute(<<SQL, [transition_time.to_i, now.to_i, target_id])
 UPDATE hashes
@@ -74,7 +74,7 @@ SQL
     end
 
     def create_hash(hash:, target_id:, transition_time:,
-                    now: TZInfo::Timezone.get(@settings[:timezone]).now, db: nil)
+                    now: Time.now, db: nil)
       db = @db if db.nil?
       db.execute <<SQL, [hash, now.to_i, now.to_i, transition_time.to_i, target_id]
 INSERT INTO hashes (hash, created_at, updated_at, valid_from, target_id)
