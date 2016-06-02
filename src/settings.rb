@@ -13,7 +13,6 @@ module PasswordStore
       self[:cost] = 20
       self[:database_filename] = 'db.sqlite3'
       self[:asset_load_path] = 'src/res'
-      self[:timezone] = 'America/Vancouver'
     end
   end
 end
