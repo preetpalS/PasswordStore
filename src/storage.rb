@@ -68,8 +68,8 @@ SQL
       db = @db if db.nil?
       db.execute(<<SQL, [transition_time.to_i, now.to_i, target_id])
 UPDATE hashes
-SET VALID_TO = ?, updated_at = ?
-WHERE target_id = ?
+SET valid_to = ?, updated_at = ?
+WHERE target_id = ? AND valid_to IS NULL
 SQL
     end
 

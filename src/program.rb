@@ -48,12 +48,16 @@ module PasswordStore
       puts 'This might take a while...'
 
       db_result.each do |hash, target, validity|
-        is_valid = (validity == 1) ? true : false
+        compare_password_with_hash(unhashed_password, hash, target, validity)
+      end
+    end
 
-        hashed_password = BCrypt::Password.new hash
-        if hashed_password == unhashed_password
-          puts "\nEntered password #{is_valid ? 'is' : 'used to be'} valid for #{target}."
-        end
+    def compare_password_with_hash(unhashed_password, hash, target, validity)
+      is_valid = (validity == 1) ? true : false
+
+      hashed_password = BCrypt::Password.new hash
+      if hashed_password == unhashed_password
+        puts "\nEntered password #{is_valid ? 'is' : 'used to be'} valid for #{target}."
       end
     end
   end
